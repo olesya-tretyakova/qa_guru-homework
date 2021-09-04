@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
 
 public class ToolsQATest {
     @BeforeAll
     static void beforeAll() {
         Configuration.startMaximized = true;
-        Configuration.timeout = 20000;
     }
 
     @Test
@@ -20,8 +20,8 @@ public class ToolsQATest {
         String firstName = "Tom";
         String lastName = "Cruise";
         String email = "tom_cruise@gmail.com";
-        String sex = "Male";
-        String userNumber = "1234512345";
+        String gender = "Male";
+        String mobileNumber = "1234512345";
         String address = "USA";
         String state = "NCR";
         String city = "Noida";
@@ -31,38 +31,38 @@ public class ToolsQATest {
         String year = "1962";
         String hobby = "Sports";
         String fileName = "photo.jpg";
+
         open("https://demoqa.com/automation-practice-form");
 
         $("#firstName").setValue(firstName);
         $("#lastName").setValue(lastName);
         $("#userEmail").setValue(email);
-        $("#genterWrapper").$(byText(sex)).click();
-        $("#userNumber").setValue(userNumber);
+        $("#genterWrapper").$(byText(gender)).click();
+        $("#userNumber").setValue(mobileNumber);
         $("#dateOfBirthInput").click();
-        $(".react-datepicker__month-select").click();
-        $(".react-datepicker__month-select").$(byText(month)).click();
-        $(".react-datepicker__year-select").click();
-        $(".react-datepicker__year-select").$(byText(year)).click();
+        $(".react-datepicker__month-select").selectOption(month);
+        $(".react-datepicker__year-select").selectOption(year);
         $(byText(day)).click();
         $("#subjectsInput").setValue(subject).pressEnter();
         $("#hobbiesWrapper").$(byText(hobby)).click();
         $("#uploadPicture").uploadFromClasspath(fileName);
         $("#currentAddress").setValue(address);
         $("#stateCity-wrapper").$(byText("Select State")).scrollIntoView(true).click();
-        $("#state").$(byText(state)).click();
+        $("#stateCity-wrapper").$(byText(state)).click();
         $("#city").click();
-        $("#city").$(byText(city)).click();
+        $("#stateCity-wrapper").$(byText(city)).click();
         $("#submit").click();
 
-        $x("//td[.='Student Name']/following-sibling::td").shouldHave(text(firstName + " " + lastName));
-        $x("//td[.='Student Email']/following-sibling::td").shouldHave(text(email));
-        $x("//td[.='Gender']/following-sibling::td").shouldHave(text(sex));
-        $x("//td[.='Mobile']/following-sibling::td").shouldHave(text(userNumber));
-        $x("//td[.='Date of Birth']/following-sibling::td").shouldHave(text(day + " " + month + "," + year));
-        $x("//td[.='Subjects']/following-sibling::td").shouldHave(text(subject));
-        $x("//td[.='Hobbies']/following-sibling::td").shouldHave(text(hobby));
-        $x("//td[.='Picture']/following-sibling::td").shouldHave(text(fileName));
-        $x("//td[.='Address']/following-sibling::td").shouldHave(text(address));
-        $x("//td[.='State and City']/following-sibling::td").shouldHave(text(state + " " + city));
+        $(".modal-title").shouldHave(text("Thanks for submitting the form"));
+        $(".table-responsive").$(byText("Student Name")).parent().shouldHave(text(firstName + " " + lastName));
+        $(".table-responsive").$(byText("Student Email")).parent().shouldHave(text(email));
+        $(".table-responsive").$(byText("Gender")).parent().shouldHave(text(gender));
+        $(".table-responsive").$(byText("Mobile")).parent().shouldHave(text(mobileNumber));
+        $(".table-responsive").$(byText("Date of Birth")).parent().shouldHave(text(day + " " + month + "," + year));
+        $(".table-responsive").$(byText("Subjects")).parent().shouldHave(text(subject));
+        $(".table-responsive").$(byText("Hobbies")).parent().shouldHave(text(hobby));
+        $(".table-responsive").$(byText("Picture")).parent().shouldHave(text(fileName));
+        $(".table-responsive").$(byText("Address")).parent().shouldHave(text(address));
+        $(".table-responsive").$(byText("State and City")).parent().shouldHave(text(state + " " + city));
     }
 }
